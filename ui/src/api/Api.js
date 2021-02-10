@@ -48,7 +48,7 @@ var getRqNoWait = (url,data) => {
   return ret;
 } // getRqNoWait
 
-var getRq = async (url, data) => {
+var getRq = async (url, data={}) => {
   let config = {
     baseURL: baseURL,
     url: url,

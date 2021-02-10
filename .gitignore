@@ -137,7 +137,7 @@ dmypy.json
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+ui/node_modules
 /.pnp
 .pnp.js
 
@@ -145,7 +145,7 @@ dmypy.json
 /coverage
 
 # production
-/build
+ui/build
 
 # misc
 .DS_Store
@@ -155,8 +155,8 @@ dmypy.json
 .env.production.local
 .vscode/
 .eslintcache
-/ui/.eslintcache
-/ui/node_modules
+ui/.eslintcache
+ui/node_modules
 
 npm-debug.log*
 yarn-debug.log*

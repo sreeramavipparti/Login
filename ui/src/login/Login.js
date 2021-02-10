@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import Api from '../api/Api';
+import Sodium from '../sodium/Sodium';
 
 class Login extends Component {
   state = {}
@@ -29,29 +30,37 @@ class Login extends Component {
       loginSubmitted: true
     });
     console.log("On submit::", this.state);
-    let rq = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    Api.getRq('login',rq)
-    .then(resp => {
-      console.log(resp);
-      if(resp) {
-        if(!resp.status) {
-          this.setState({
-            error: resp.data
-          })
-        }
-        else {
-          this.setState({
-            error: null,
-            success: resp.data['success'],
-            unsuccess: resp.data['unsuccess'],
-            visits: resp.data['visits']
-          })
-        }
-      } 
-    });
+    Api.getRq('nonce/')
+    .then(nonceresp => {
+      console.log(nonceresp);
+      Sodium.enc2(this.state.email, this.state.password, nonceresp.data['nonce'])
+      .then(resp => {
+        console.log(resp);
+        let rq = {
+          email: nonceresp.data['nonce']+resp[0],
+          password: resp[1] 
+        };
+        Api.getRq('login',rq)
+        .then(resp => {
+          console.log(resp);
+          if(resp) {
+            if(!resp.status) {
+              this.setState({
+                error: resp.data
+              })
+            }
+            else {
+              this.setState({
+                error: null,
+                success: resp.data['success'],
+                unsuccess: resp.data['unsuccess'],
+                visits: resp.data['visits']
+              })
+            }
+          } 
+        }); // http://.../login/ 
+      }); // enc(message,nonce)
+    }); // http://.../nonce/
   } // onLoginSubmit
 
   onSubmit = (e) => {

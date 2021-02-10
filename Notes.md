@@ -302,7 +302,8 @@ Now let us proceed to actual installations.
         5. (venv)...$ pip install --upgrade setuptools
         6. (venv)...$ pip install mysqlclient
         7. (venv)...$ pip install Django djangorestframework django-cors-headers
-        8. (venv)...$ deactivate
+        8. (venv)...$ pip install libnacl      -- you can use other python packages for libsodium also
+        9. (venv)...$ deactivate
      7. mod_wsgi installation: mod_wsgi is used to serve python web services in production environments. Django serves in a developmment environment just like XAMPP or Flask. cgi can also be used.
 #### Create the backend application
 First we need to create a Django project and then the required application(s). Activate the virtual environment created in previous step.
