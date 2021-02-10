@@ -1,6 +1,7 @@
 import Axios from 'axios';
 
-const baseURL = 'http://api';
+//const baseURL = 'http://api';
+const baseURL = 'http://127.0.0.1:8000';
 const headers = {
   "Content-Type": "application/json"
 }
@@ -22,7 +23,7 @@ var getNonce = async () => {
       ret = resp.data.nonce;
     })
     .catch(err => {
-      ret = '';
+      ret = err;
       console.error(err);
     });
   return ret;
@@ -55,12 +56,15 @@ var getRq = async (url, data) => {
     headers: headers,
     params: data
   };
+  console.log(config)
   let ret = '';
   await Axios(config)
     .then(resp => {
       ret = resp.data;
+      console.log(ret);
     })
     .catch(err => {
+      ret = err;
       console.error(err);
     });
   return ret;
