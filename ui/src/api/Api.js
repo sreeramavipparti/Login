@@ -1,7 +1,8 @@
 import Axios from 'axios';
 
 //const baseURL = 'http://api';
-const baseURL = 'http://127.0.0.1:8000';
+//const baseURL = 'http://127.0.0.1:8000';
+const baseURL = 'http://ec2-54-191-74-255.us-west-2.compute.amazonaws.com/api';
 const headers = {
   "Content-Type": "application/json"
 }

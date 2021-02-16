@@ -31,7 +31,6 @@ class UsersView(generics.RetrieveAPIView):
 def nonce(request):
   print()
   print()
-  print(request.META['HTTP_ORIGIN'])
   print(request.META['REMOTE_ADDR'])
   print(request.META['HTTP_HOST'])
   nnc = libnacl.utils.rand_nonce()
@@ -47,7 +46,6 @@ def nonce(request):
 def login_request(request):
   print()
   print()
-  print(request.META['HTTP_ORIGIN'])
   print(request.META['REMOTE_ADDR'])
   print(request.META['HTTP_HOST'])
   email=request.query_params['email']

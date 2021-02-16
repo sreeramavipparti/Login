@@ -372,7 +372,10 @@ For production deployment see the 'Deployment' section.
    * $ sudo systemctl restart apache2.service -- if you have changed the /etc/hosts file
 
 #### ***'api'*** deployment
-1. Add a conf file with the following contents. We will be adding this file to Apache2 enabled sites. I named the conf file as ***api.conf***.
+1. Once the development is in a stage to deploy, execute the following command, of course in venv:
+   $ python3 manage.py check --deploy
+   Address the security warnings before deploying in production.
+2. Add a conf file with the following contents. We will be adding this file to Apache2 enabled sites. I named the conf file as ***api.conf***.
 		<VirtualHost *:80>
 			ServerName api
 
@@ -410,7 +413,7 @@ For production deployment see the 'Deployment' section.
   In general your development environment will be different from production environment. In that case modify the api.conf file according to the production server paths wherever applicable. You may also need to do the above changes on production server also.
   
   Copy the contents of the build folder in 'api' directory to the production server, in the paths defined by api.conf file.
-2. All you need to do now is to enable the site and reload apache2 server. To serve the api site, execute the following commands:
+3. All you need to do now is to enable the site and reload apache2 server. To serve the api site, execute the following commands:
    * $ sudo cp /home/sreeram/Login/api.conf /etc/apache2/sites-available
    * $ sudo a2ensite api.conf
    * $ sudo systemctl reload apache2.service   <or>
@@ -425,9 +428,10 @@ LoadModule wsgi_module "..."
   	* $	mod_wsgi-express module_config
   Add the LoadModule entry to the apache2.conf file from the above command, at the end. Do not add the python home entry. We already did that in the 'api.conf' file
 
-2. Check for the appropriate .conf files in the /etc/apache2/sites-enabled directory. Check for corresponding entries in /etc/hosts file. I suggest to use different .conf files for backend api and frontend ui with appropriate virtual host configurations. Although these can be clubbed into single .conf file, with care. Using single .conf file may lead to longterm maintenance problems.
+2. Check for the appropriate .conf files in the /etc/apache2/sites-enabled directory. Check for corresponding entries in /etc/hosts file. These can be clubbed into single .conf file, with care. Using single .conf file may lead to longterm maintenance problems, if not configured properly.
+3. I suggest to use a common login.conf file for backend api and frontend ui.
 
-3. Restart the apache2 server:
+4. Restart the apache2 server:
    $ sudo systemctl restart apache2.service
 
 #### AWS configuration for development
