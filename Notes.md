@@ -218,26 +218,26 @@ Run the following command to build production ready artifacts, to be deployed in
   * $ yarn build
 Note the similarity with the **'npm'** tool.
 ##### **'npx'**
-The application can also be created using 'npx' tool. I did not attempt this.
-Run the following commands:
-$ npx create-react-app ui
-$ cd ui
-$ npm i react-bootstrap bootstrap
-$ npm i sodium-native sodium-plus (This is my assumption. Not sure if this works)
-$ npm install
-$ npm [run] start
-$ npm [run] build
-Note the similarity with the **'yarn'** tool.
-I recommend the npm-check-updates package also. This helps in updating the packages used.
-Run the following commands:
-$ npm i -g npm-check-updates
-$ cd ui     - if already not in the 'ui' directory
-$ ncu       - reports upgradable packages in package.json
-$ ncu -u    - updates package.json with the reported packages
-$ npm install    - actually installs the packages in package.json
+The application can also be created using 'npx' tool. I did not attempt this.\
+Run the following commands:\
+$ npx create-react-app ui\
+$ cd ui\
+$ npm i react-bootstrap bootstrap\
+$ npm i sodium-native sodium-plus (This is my assumption. Not sure if this works)\
+$ npm install\
+$ npm [run] start\
+$ npm [run] build\
+Note the similarity with the **'yarn'** tool.\
+I recommend the npm-check-updates package also. This helps in updating the packages used.\
+Run the following commands:\
+$ npm i -g npm-check-updates\
+$ cd ui     - if already not in the 'ui' directory\
+$ ncu       - reports upgradable packages in package.json\
+$ ncu -u    - updates package.json with the reported packages\
+$ npm install    - actually installs the packages in package.json\
 
-Now proceed with the development work as usual. 
-For production deployment see the 'Deployment' section.
+Now proceed with the development work as usual. \
+For production deployment see the 'Deployment' section. \
 
 ### Backend development
 #### Backend software installation
@@ -313,8 +313,8 @@ First we need to create a Django project and then the required application(s). A
   * (venv)...$ django-admin startapp login
   * (venv)...$ deactivate
 
-Now proceed with the development work as usual. Ensure to create the require database in MySql.
-For production deployment see the 'Deployment' section.
+Now proceed with the development work as usual. Ensure to create the require database in MySql. \
+For production deployment see the 'Deployment' section. \
 
 ### Deployment
 #### ***'ui'*** deployment
@@ -330,7 +330,8 @@ For production deployment see the 'Deployment' section.
 			Options -Indexes
 2. Add a conf file with the following contents. We will be adding this file to Apache2 enabled sites. I named the conf file as ***ui.conf***.
    	<VirtualHost *:80>
-			ServerName ui
+			ServerName ui.com
+			ServerAlias www.ui.com
 
 			ServerAdmin webmaster@localhost
 			DocumentRoot /home/sreeram/Login/ui/build
@@ -355,7 +356,11 @@ For production deployment see the 'Deployment' section.
     </VirtualHost>
   * Do NOT use 'Access-control-allow-origin' entry header option in the RESTful requests in your application. django rest framework will report CORS errors, if the header is included in your requests.
   * Add the 'ServerName' entry used in 'ui.conf' file in the /etc/hosts file.
-   127.0.0.1     ui
+   127.0.0.1     ui.com \
+   127.0.0.1     www.ui.com \
+	OR
+   <ipaddress>   <servername from .conf file>
+   <ipaddress>	<serveraliasname from .conf file>	
   * Build the production ui, with the following command:
     * $ yarn build
   If your development environment and production environment are same, which is highly unlikely, then your ui is deployed on the production server; to serve the same enable the site.\
@@ -368,8 +373,15 @@ For production deployment see the 'Deployment' section.
 3. All you need to do now is to enable the site and reload apache2 server. To serve the ui site, execute the following commands:
    * $ sudo cp /home/sreeram/Login/ui.conf /etc/apache2/sites-available
    * $ sudo a2ensite ui.conf
+   * $ sudo a2query -s
+   * $ sudo apachectl configtest
    * $ sudo systemctl reload apache2.service  <or>
    * $ sudo systemctl restart apache2.service -- if you have changed the /etc/hosts file
+
+4. After this you can access your web site from browser as http://www.ui.com or http://www.<servername/serveraliasname>.com.
+	   
+5. Please check the /var/log/apache2/error.log (OR the log file configured in the virtural host .conf file). Most likely, you may need to run the following command:
+   * $ sudo a2enmod rewrite  - for Rewrite* commands from .htaccess
 
 #### ***'api'*** deployment
 1. Once the development is in a stage to deploy, execute the following command, of course in venv:
@@ -377,7 +389,8 @@ For production deployment see the 'Deployment' section.
    Address the security warnings before deploying in production.
 2. Add a conf file with the following contents. We will be adding this file to Apache2 enabled sites. I named the conf file as ***api.conf***.
 		<VirtualHost *:80>
-			ServerName api
+			ServerName api.com
+			ServerAlias www.api.com
 
 			ServerAdmin webmaster@localhost
 			DocumentRoot /home/sreeram/Login/api
@@ -405,7 +418,11 @@ For production deployment see the 'Deployment' section.
       .
     </VirtualHost>
   * Add the 'ServerName' entry used in 'api.conf' file in the /etc/hosts file.
-   127.0.0.1     api
+   127.0.0.1     api.com \
+   127.0.0.1	www.api.com \
+	OR
+   <ipaddress>   <servername from .conf file>
+   <ipaddress>	<serveraliasname from .conf file>
 
   If your development environment and production environment are same, which is highly unlikely, then your api is deployed on the production server; to serve the same enable the site.\
   Segregate your development and production environments as early as possible. It is not advisable.
@@ -413,11 +430,29 @@ For production deployment see the 'Deployment' section.
   In general your development environment will be different from production environment. In that case modify the api.conf file according to the production server paths wherever applicable. You may also need to do the above changes on production server also.
   
   Copy the contents of the build folder in 'api' directory to the production server, in the paths defined by api.conf file.
+	   
 3. All you need to do now is to enable the site and reload apache2 server. To serve the api site, execute the following commands:
    * $ sudo cp /home/sreeram/Login/api.conf /etc/apache2/sites-available
    * $ sudo a2ensite api.conf
+   * $ sudo a2query -s
+   * $ sudo apachectl configtest	   
    * $ sudo systemctl reload apache2.service   <or>
    * $ sudo systemctl restart apache2.service -- if you have changed the /etc/hosts file
+	   
+4. After this you can access your web site from browser as http://www.api.com or http://www.<servername/serveraliasname>.com.
+	   
+5. Please check the /var/log/apache2/error.log (OR the log file configured in the virtural host .conf file). Most likely, you may need to run the following command:
+   * $ sudo a2enmod rewrite  - for Rewrite* commands from .htaccess
+	   
+#### ***Combined .conf is preferred***
+If ui.conf and api.conf point to same directory paths, it is highly likely that you may get permission or forbidden or other kinds of errors. In that case club both of the virtual host files into one.
+
+#### ***Summary***
+1. Have a .htaccess file in your web-site root
+2. Create a virtual host file in /etc/apache2/sites-available directory.
+3. Add ServerName and ServerAliasName to the virtual host configuration file. Add the same names to your /etc/hosts file. Otherwise you will not be able to access your website on production.
+4. Enable the virtual host configuration file with a2ensite after disabling with a2dissite.
+5. Do not forget to enable rewrite module, ie. a2enmod rewrite.
 #### Apache2 server configuration
 1. Check for the wsgi_module entry in the /etc/apache2/apache2.conf file:
 LoadModule wsgi_module "..."
