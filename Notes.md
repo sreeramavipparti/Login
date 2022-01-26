@@ -168,10 +168,10 @@ The above structure is arrived at, by the following items.
     * $ sudo apt-get install libsodium-dev
 
 ### UI development
-Create a project directory. Then create another directory UI application under the project directory.
-$ cd                    -- This will take you to user home directory
-$ mkdir Login
-$ mkdir Login/ui
+Create a project directory. Then create another directory UI application under the project directory.\
+$ cd                    -- This will take you to user home directory\
+$ mkdir Login\
+$ mkdir Login/ui\
 
 #### UI Software installation
 Software required to install:
@@ -319,15 +319,15 @@ For production deployment see the 'Deployment' section. \
 ### Deployment
 #### ***'ui'*** deployment
 1. Add the .htaccess file to the public directory in the react project. This is required for running React Applications in production environment.
-	The content of the .htaccess file should be:
-			RewriteEngine On
-			RewriteBase /
-			RewriteRule ^index\.html$ - [L]
-			RewriteCond %{REQUEST_FILENAME} !-f
-			RewriteCond %{REQUEST_FILENAME} !-d
-			RewriteCond %{REQUEST_FILENAME} !-l
-			RewriteRule . /index.html [L]
-			Options -Indexes
+	The content of the .htaccess file should be:\
+			RewriteEngine On\
+			RewriteBase /\
+			RewriteRule ^index\.html$ - [L]\
+			RewriteCond %{REQUEST_FILENAME} !-f\
+			RewriteCond %{REQUEST_FILENAME} !-d\
+			RewriteCond %{REQUEST_FILENAME} !-l\
+			RewriteRule . /index.html [L]\
+			Options -Indexes\
 2. Add a conf file with the following contents. We will be adding this file to Apache2 enabled sites. I named the conf file as ***ui.conf***.
    	<VirtualHost *:80>
 			ServerName ui.com
@@ -388,7 +388,7 @@ For production deployment see the 'Deployment' section. \
    $ python3 manage.py check --deploy
    Address the security warnings before deploying in production.
 2. Add a conf file with the following contents. We will be adding this file to Apache2 enabled sites. I named the conf file as ***api.conf***.
-		<VirtualHost *:80>
+<VirtualHost *:80>
 			ServerName api.com
 			ServerAlias www.api.com
 
@@ -408,7 +408,7 @@ For production deployment see the 'Deployment' section. \
 					Allow from all
 				</Files>
 			</Directory>
-		</VirtualHost>
+</VirtualHost>
 
     If you want to change the listening port, do so by adding Listen <port> before the <VirtualHost>. The .conf files content should be looking like this:
     Listen 12345
@@ -459,8 +459,9 @@ LoadModule wsgi_module "..."
   This is required if you wish to serve servers using python based Djago or Flask.
   
   If the above entry is not found, then run one of the following commands
-  	* $ sudo mod_wsgi-express install_module <or> 
-  	* $	mod_wsgi-express module_config
+  * $ sudo mod_wsgi-express install_module <or> 
+  * $ mod_wsgi-express module_config
+
   Add the LoadModule entry to the apache2.conf file from the above command, at the end. Do not add the python home entry. We already did that in the 'api.conf' file
 
 2. Check for the appropriate .conf files in the /etc/apache2/sites-enabled directory. Check for corresponding entries in /etc/hosts file. These can be clubbed into single .conf file, with care. Using single .conf file may lead to longterm maintenance problems, if not configured properly.
